@@ -1,13 +1,25 @@
 import { render, screen, within } from "@testing-library/react";
 import UserList from "./UserList";
 
-test("render one row per user", async () => {
-  // Render the component
+function renderComponent() {
   const users = [
     { name: "Sama", email: "sama@gmail.com" },
     { name: "Amirhossein", email: "amirhossin@gmail.com" },
   ];
   render(<UserList users={users} />);
+
+  return { users };
+}
+
+// Avoiding before each
+// beforeEach(() => {
+//   render(<UserList users={users} />);
+// });
+
+test("render one row per user", async () => {
+  // Render the component
+  renderComponent();
+
   // const { container } = render(<UserList users={users} />);
 
   // Find all the rows in the table
@@ -20,11 +32,7 @@ test("render one row per user", async () => {
 
 test("render the email and name of each user", async () => {
   // Render the component
-  const users = [
-    { name: "Sama", email: "sama@gmail.com" },
-    { name: "Amirhossein", email: "amirhossin@gmail.com" },
-  ];
-  render(<UserList users={users} />);
+  const { users } = renderComponent();
 
   for (let user of users) {
     const name = screen.getByRole("cell", { name: user.name });
